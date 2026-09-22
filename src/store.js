@@ -1,9 +1,12 @@
-// store.js
-import { configureStore } from '@reduxjs/toolkit';
-import venueReducer from './venueSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import mealsReducer from "./mealsSlice";
+import avReducer from "./avSlice";
 
-export default configureStore({
+const store = configureStore({
   reducer: {
-    venue: venueReducer,
+    meals: mealsReducer,
+    av: avReducer,
   },
 });
+
+export default store;

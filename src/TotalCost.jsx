@@ -1,27 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import "./TotalCost.css";
+import { useSelector } from "react-redux";
 
-const TotalCost = ({ totalCosts, ItemsDisplay }) => {
-  
+const TotalCost = () => {
+  const venueItems = useSelector(state => state.venue);   // array
+  const avItems = useSelector(state => state.av);         // array
 
-  return (
-    <div className="pricing-app">
-      <div className="display_box">
-        <div className="header">
-          <p className="preheading"><h3>Total cost for the event</h3></p>
-        </div>
-        <div>
-          <h2 id="pre_fee_cost_display" className="price">
-           
-          </h2>
-         
-            <div>
-             
-            </div>
-        </div>
-      </div>
-    </div>
-  );
+  const safeVenueItems = Array.isArray(venueItems) ? venueItems : [];
+  const safeAvItems = Array.isArray(avItems) ? avItems : [];
+
+  let total = 0;
+
+  safeVenueItems.forEach(item => {
+    total += item.quantity * item.cost;
+  });
+
+  safeAvItems.forEach(item => {
+    total += item.quantity * item.cost;
+  });
+
+  return <div>Total Cost: ${total}</div>;
 };
 
 export default TotalCost;
