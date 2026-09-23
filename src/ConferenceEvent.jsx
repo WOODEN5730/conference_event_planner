@@ -14,7 +14,7 @@ const ConferenceEvent = () => {
 
   const dispatch = useDispatch();
 
-  // Fix auditorium name (no leading space)
+  // Fix auditorium name (remove leading space in slice!)
   const auditorium = venueItems.find(
     (item) => item.name === "Auditorium Hall (Capacity:200)"
   );
@@ -46,24 +46,13 @@ const ConferenceEvent = () => {
     }
   };
 
-  const calculateTotalCost = () => {
-    return venueItems.reduce(
-      (total, item) => total + item.cost * item.quantity,
-      0
-    );
-  };
+  // Venue cost
+  const venueTotalCost = venueItems.reduce(
+    (total, item) => total + item.cost * item.quantity,
+    0
+  );
 
-  const venueTotalCost = calculateTotalCost();
-
-  const navigateToProducts = (idType) => {
-    if (["#venue", "#addons", "#meals"].includes(idType)) {
-      if (!showItems) {
-        setShowItems(true);
-      }
-    }
-  };
-
-  // ⭐ Add meals so your Meals section works
+  // ⭐ Meals state
   const [meals, setMeals] = useState([
     { id: 1, name: "Breakfast Buffet", price: 15, selected: false },
     { id: 2, name: "Lunch Buffet", price: 25, selected: false },
@@ -76,6 +65,22 @@ const ConferenceEvent = () => {
         meal.id === id ? { ...meal, selected: !meal.selected } : meal
       )
     );
+  };
+
+  // ⭐ Correct meal cost calculation
+  const mealTotalCost = meals
+    .filter((meal) => meal.selected)
+    .reduce((total, meal) => total + meal.price, 0);
+
+  // ⭐ Combined total cost
+  const combinedTotalCost = venueTotalCost + mealTotalCost;
+
+  const navigateToProducts = (idType) => {
+    if (["#venue", "#addons", "#meals"].includes(idType)) {
+      if (!showItems) {
+        setShowItems(true);
+      }
+    }
   };
 
   return (
@@ -184,18 +189,7 @@ const ConferenceEvent = () => {
                 ))}
               </div>
 
-              <div className="total_cost">Total Cost: ${venueTotalCost}</div>
-            </div>
-
-            {/* Add-ons */}
-            <div id="addons" className="venue_container container_main">
-              <div className="text">
-                <h1>Add-ons Selection</h1>
-              </div>
-
-              <div className="addons_selection"></div>
-
-              <div className="total_cost">Total Cost:</div>
+              <div className="total_cost">Venue Cost: ${venueTotalCost}</div>
             </div>
 
             {/* Meals */}
@@ -219,13 +213,17 @@ const ConferenceEvent = () => {
                 ))}
               </div>
 
-              <div className="total_cost">Total Cost:</div>
+              <div className="total_cost">Meal Cost: ${mealTotalCost}</div>
+            </div>
+
+            <div className="total_cost">
+              Combined Total: ${combinedTotalCost}
             </div>
           </div>
         ) : (
           <div className="total_amount_detail">
             <TotalCost
-              totalCosts={venueTotalCost}
+              totalCosts={combinedTotalCost}
               handleClick={handleToggleItems}
             />
           </div>
