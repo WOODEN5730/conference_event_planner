@@ -9,19 +9,19 @@ import { incrementQuantity, decrementQuantity } from "./venueSlice";
 const ConferenceEvent = () => {
   const [showItems, setShowItems] = useState(false);
 
-  // Always return an array — prevents .find() crash
- const venueItems = useSelector((state) => state.venue);
+  // Your slice is an array, so this is correct
+  const venueItems = useSelector((state) => state.venue);
 
   const dispatch = useDispatch();
 
-  // Safe auditorium lookup
-const auditorium = venueItems.find(
-  (item) => item.name === "Auditorium Hall (Capacity:200)"
-);
+  // Fix auditorium name (no leading space)
+  const auditorium = venueItems.find(
+    (item) => item.name === "Auditorium Hall (Capacity:200)"
+  );
 
   const remainingAuditoriumQuantity = auditorium
-  ? 3 - auditorium.quantity
-  : 3;
+    ? 3 - auditorium.quantity
+    : 3;
 
   const handleToggleItems = () => {
     setShowItems((prev) => !prev);
@@ -61,6 +61,21 @@ const auditorium = venueItems.find(
         setShowItems(true);
       }
     }
+  };
+
+  // ⭐ Add meals so your Meals section works
+  const [meals, setMeals] = useState([
+    { id: 1, name: "Breakfast Buffet", price: 15, selected: false },
+    { id: 2, name: "Lunch Buffet", price: 25, selected: false },
+    { id: 3, name: "Dinner Buffet", price: 35, selected: false },
+  ]);
+
+  const handleMealToggle = (id) => {
+    setMeals((prev) =>
+      prev.map((meal) =>
+        meal.id === id ? { ...meal, selected: !meal.selected } : meal
+      )
+    );
   };
 
   return (
@@ -189,8 +204,20 @@ const auditorium = venueItems.find(
                 <h1>Meals Selection</h1>
               </div>
 
-              <div className="input-container venue_selection"></div>
-              <div className="meal_selection"></div>
+              <div className="meal_selection">
+                {meals.map((meal) => (
+                  <div key={meal.id} className="meal-item">
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={meal.selected}
+                        onChange={() => handleMealToggle(meal.id)}
+                      />
+                      {meal.name} — ${meal.price}
+                    </label>
+                  </div>
+                ))}
+              </div>
 
               <div className="total_cost">Total Cost:</div>
             </div>
