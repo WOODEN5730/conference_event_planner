@@ -313,7 +313,7 @@
     cursor: not-allowed; /* Change cursor to indicate that the button is not clickable */
   }
   @media (max-width: 700px) {
-    navbar {
+    nav {
         display: flex;
         flex-direction: column;
         justify-content: center;
