@@ -13,7 +13,7 @@
   justify-content: center;
   align-items: center;
   color: white;
-  overflow: hidden; 
+  overflow: hidden;
   background-color: rgb(185, 186, 187);
   /* position: relative; */
 }
@@ -34,7 +34,7 @@
 }
 
 .get-started-btn {
-  background-color:#EFC16B;
+  background-color: #efc16b;
   /* color: white; */
   color: black;
   border: none;
@@ -68,7 +68,6 @@
   width: 800px;
   color: white;
   /* background-color: rgba(0,0,0,0.1); */
-
 }
 
 .aboutus_container {
@@ -82,8 +81,6 @@
 .aboutus_container p {
   font-size: 23px;
   font-weight: 700;
-  
-
 }
 
 .first_page_name_btn {
